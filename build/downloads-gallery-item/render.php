@@ -18,8 +18,8 @@ if ( $dl_title && $dl_link ) {
 	?>
 <li <?php echo esc_attr( get_block_wrapper_attributes( array( 'class' => 'downloads-gallery__item' ) ) ); ?>>
 	<h3><?php echo wp_kses_post( $dl_title ); ?></h3>
-	<a class="wp-element-button wp-block-button__link"
-		target="__blank" 
+	<a download
+	class="wp-element-button wp-block-button__link"
 		href="<?php echo $dl_link['url'] ? esc_url( $dl_link['url'] ) : '#'; ?>">
 		<?php echo isset( $dl_link['title'] ) ? wp_kses_post( $dl_link['title'] ) : wp_kses_post( __( 'Downloaden', 'downloads-gallery' ) ); ?>
 	</a>
