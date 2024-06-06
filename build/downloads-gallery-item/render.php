@@ -11,13 +11,18 @@
 
 namespace DOWNLOADS_GALLERY_BLOCK;
 
-$dl_title       = $attributes['dl_title'] ?? '';
-$dl_link        = $attributes['dl_link'] ?? '';
-$dl_button_text = $attributes['dl_button_text'] ?? '';
-?>
+$dl_title = $attributes['dl_title'] ?? '';
+$dl_link  = $attributes['dl_link'] ?? '';
+
+if ( $dl_title && $dl_link ) {
+	?>
 <li <?php echo esc_attr( get_block_wrapper_attributes( array( 'class' => 'downloads-gallery__item' ) ) ); ?>>
 	<h3><?php echo wp_kses_post( $dl_title ); ?></h3>
-	<?php if ( ! empty( $dl_link ) ) { ?>
-		<a target="__blank" href="<?php echo esc_url( $dl_link['url'] ); ?>"><?php echo isset( $dl_button_text ) ? wp_kses_post( $dl_button_text ) : wp_kses_post( __( 'Downloaden', 'downloads-gallery' ) ); ?></a>
-	<?php } ?>
+	<a class="wp-element-button wp-block-button__link"
+		target="__blank" 
+		href="<?php echo $dl_link['url'] ? esc_url( $dl_link['url'] ) : '#'; ?>">
+		<?php echo isset( $dl_link['title'] ) ? wp_kses_post( $dl_link['title'] ) : wp_kses_post( __( 'Downloaden', 'downloads-gallery' ) ); ?>
+	</a>
 </li>
+	<?php
+}

@@ -11,7 +11,7 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import {__experimentalLinkControl as LinkControl, useBlockProps, MediaPlaceholder, RichText, BlockControls} from '@wordpress/block-editor';
+import {__experimentalLinkControl as LinkControl, useBlockProps, RichText, BlockControls} from '@wordpress/block-editor';
 
 import { useSelect } from '@wordpress/data';
 
@@ -31,30 +31,14 @@ import { trash, link } from '@wordpress/icons';
  */
 export default function Edit({attributes, setAttributes}) {
 
-	const {imageID, imageURL} = attributes;
-
-	const thumbnailURL = useSelect( select => {
-		const image = imageID && select( 'core' ).getMedia( imageID );
-		const size = 'tiny-lazyload-thumbnail';
-		return image && image?.media_downloads?.sizes[size]?.source_url || imageURL;
-	}, [ imageID ] );
-
-	const imageWidth = useSelect( select => {
-		const image = imageID && select( 'core' ).getMedia( imageID );
-		const size = 'large';
-		return image && image?.media_downloads?.sizes[size]?.width || 0;
-	}, [ imageID ] );
-
-	const imageHeight = useSelect( select => {
-		const image = imageID && select( 'core' ).getMedia( imageID );
-		const size = 'large';
-		return image && image?.media_downloads?.sizes[size]?.height || 0;
-	}, [ imageID ] );
-
 	const [ showLinkPopover, setShowLinkPopover ] = useState( false );
 	const toggleLinkPopover = () => {
 			setShowLinkPopover( ( state ) => ! state );
 	};
+
+  const blockProps = useBlockProps( {
+    className: 'downloads-gallery__item'
+  } );
 
 	return (
 		<>
@@ -72,10 +56,10 @@ export default function Edit({attributes, setAttributes}) {
 				<Popover>
 					<LinkControl
 						searchInputPlaceholder={__('Zoek of typ URL', 'downloads-gallery')}
-						value={ attributes.link }
+						value={ attributes.dl_link }
 						onChange={ ( newLink ) => {
-							setAttributes( { link: {...newLink || ''} } ) }
-						}
+							setAttributes( { dl_link: {...newLink || ''} } ) 
+						} }
 					>
 					</LinkControl>
 				</Popover>
@@ -84,62 +68,26 @@ export default function Edit({attributes, setAttributes}) {
 		{/* End Toolbar zone */}
 
 		{/* Main block zone */}
-		<li className='downloads-gallery__item'>
-			<figure { ...useBlockProps() }>
-				{!!imageID && !!imageURL ? (
-					<div className='img-container' style={{backgroundImage: 'url(' + {thumbnailURL} + ')' }}>
-						<img
-							className='img-container__image'
-							loading='lazy'
-							decoding='async'
-							width={imageWidth}
-							height={imageHeight}
-							src={imageURL}
-						/>
-						<Button
-							icon={ trash }
-							label={__( 'Afbeelding verwijderen', 'downloads-gallery')}
-							className='trash-icon'
-							onClick={() => setAttributes({imageURL: null, imageID: null})} 
-						>
-						</Button>
-					</div>
-				):(
-					<MediaPlaceholder
-						onSelect = {
-							( selectedImage ) => {
-								setAttributes( { imageURL: selectedImage.url, imageID: selectedImage.id } );
-							}
-						}
-						allowedTypes = { [ 'image' ] }
-						multiple = { false }
-						labels = { { title: __( 'Kies een afbeelding', 'downloads-gallery') } }
-					/>
-				) }
-				<figcaption>
-					<RichText 
-						tagName='h3'
-						allowedFormats={[]}
-						value={attributes.name}
-						onChange={(name) => setAttributes({name})}
-						placeholder={__( 'Naam (bijv. Festival Cement)...', 'downloads-gallery')}
-					/>
-					<RichText 
-						tagName='p'
-						allowedFormats={[
-								'core/italic',
-								'core/bold',
-								'core/strikethrough',
-								'core/subscript',
-								'core/superscript',
-								'core/underline'
-							]}
-						value={attributes.description}
-						onChange={(description) => setAttributes({description})}
-						placeholder={__( 'Omschrijving (bijv. Theater van nieuwe makers)...', 'downloads-gallery')}
-					/>
-				</figcaption>
-			</figure>
+		<li { ...blockProps }>
+			<RichText 
+				tagName='h3'
+				allowedFormats={[]}
+				value={ attributes.dl_title }
+				onChange={(dl_title) => setAttributes({dl_title})}
+				placeholder={__( 'Titel (bijv. Jaarverslag)', 'downloads-gallery')}
+				required
+			/>
+			<RichText 
+				tagName='div'
+				className='wp-element-button wp-block-button__link'
+				allowedFormats={[]}
+				value={ attributes.dl_link.title }
+				onChange={ (newTitle) => {
+					setAttributes( { dl_link: {...attributes.dl_link, title: newTitle} } )
+				} }
+				placeholder={__( 'Knoptekst (bijv. Downloaden)', 'downloads-gallery')}
+				required
+			/>
 		</li>
 		{/* End Main block zone */}
 		</>

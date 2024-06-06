@@ -4,8 +4,8 @@
   "name": "maxgruson/downloads-gallery-item",
   "version": "0.1.0",
   "title": "Downloadblok",
-  "category": "download",
-  "icon": "id-alt",
+  "category": "design",
+  "icon": "download",
   "description": "Een blok om een bestand te downloaden.",
   "example": {},
   "supports": {
@@ -16,10 +16,10 @@
       "type": "string"
     },
     "dl_link": {
-      "type": "object"
-    },
-    "dl_button_text": {
-      "type": "string"
+      "type": "object",
+      "default": {
+        "title": "Downloaden"
+      }
     }
   },
   "parent": [
