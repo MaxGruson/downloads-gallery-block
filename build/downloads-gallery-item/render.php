@@ -16,7 +16,7 @@ $dl_link  = $attributes['dl_link'] ?? '';
 
 if ( $dl_title && $dl_link ) {
 	?>
-<li <?php echo esc_attr( get_block_wrapper_attributes( array( 'class' => 'downloads-gallery__item' ) ) ); ?>>
+<li <?php echo get_block_wrapper_attributes( array( 'class' => 'downloads-gallery__item' ) ); ?>>
 	<h3><?php echo wp_kses_post( $dl_title ); ?></h3>
 	<a download
 	class="wp-element-button wp-block-button__link"
