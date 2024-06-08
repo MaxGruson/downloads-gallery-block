@@ -13,15 +13,16 @@ namespace DOWNLOADS_GALLERY_BLOCK;
 
 $dl_title = $attributes['dl_title'] ?? '';
 $dl_link  = $attributes['dl_link'] ?? '';
+$dl_button_text = $attributes['dl_button_text'] ?? '';
 
-if ( $dl_title && $dl_link ) {
+if ( $dl_title && $dl_link && $dl_button_text ) {
 	?>
 <li <?php echo get_block_wrapper_attributes( array( 'class' => 'downloads-gallery__item' ) ); ?>>
 	<h3><?php echo wp_kses_post( $dl_title ); ?></h3>
 	<a download
 	class="wp-element-button wp-block-button__link"
-		href="<?php echo $dl_link['url'] ? esc_url( $dl_link['url'] ) : '#'; ?>">
-		<?php echo isset( $dl_link['title'] ) ? wp_kses_post( $dl_link['title'] ) : wp_kses_post( __( 'Downloaden', 'downloads-gallery' ) ); ?>
+		href="<?php echo $dl_link ? esc_url( $dl_link ) : '#'; ?>">
+		<?php echo isset( $dl_button_text ) ? wp_kses_post( $dl_button_text ) : wp_kses_post( __( 'Downloaden', 'downloads-gallery' ) ); ?>
 	</a>
 </li>
 	<?php

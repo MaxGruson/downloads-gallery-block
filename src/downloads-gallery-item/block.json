@@ -15,8 +15,11 @@
 		"dl_title": {
 			"type": "string"
 		},
-		"dl_link": {
-			"type": "object",
+    "dl_link": {
+			"type": "string"
+		},
+		"dl_button_text": {
+			"type": "string",
 			"default": {
 				"title": "Downloaden"
 			}

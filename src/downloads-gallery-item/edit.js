@@ -11,15 +11,29 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
-import {__experimentalLinkControl as LinkControl, useBlockProps, RichText, BlockControls} from '@wordpress/block-editor';
+import {
+	__experimentalLinkControl as LinkControl, 
+	useBlockProps,
+	RichText, 
+	BlockControls,
+	MediaUpload,
+	MediaUploadCheck
+} from '@wordpress/block-editor';
 
-import { useSelect } from '@wordpress/data';
+import {
+	ToolbarGroup,
+	ToolbarButton,
+	Popover 
+} from '@wordpress/components';
 
-import { ToolbarGroup, ToolbarButton, Popover, Button } from '@wordpress/components';
+import {
+	useState 
+} from '@wordpress/element';
 
-import { useState } from '@wordpress/element';
-
-import { trash, link } from '@wordpress/icons';
+import {
+	link,
+	customLink
+} from '@wordpress/icons';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -36,9 +50,9 @@ export default function Edit({attributes, setAttributes}) {
 			setShowLinkPopover( ( state ) => ! state );
 	};
 
-  const blockProps = useBlockProps( {
-    className: 'downloads-gallery__item'
-  } );
+	const blockProps = useBlockProps( {
+		className: 'downloads-gallery__item'
+	} );
 
 	return (
 		<>
@@ -51,19 +65,22 @@ export default function Edit({attributes, setAttributes}) {
 					onClick={toggleLinkPopover}
 					isPressed={showLinkPopover}
 				/>
-			</ToolbarGroup>
-			{showLinkPopover && (
-				<Popover>
-					<LinkControl
-						searchInputPlaceholder={__('Zoek of typ URL', 'downloads-gallery')}
-						value={ attributes.dl_link }
-						onChange={ ( newLink ) => {
-							setAttributes( { dl_link: {...newLink || ''} } ) 
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={ ( media ) => {
+							setAttributes( { dl_link: media.url  } );
 						} }
-					>
-					</LinkControl>
-				</Popover>
-			)}
+						value={ attributes.dl_link }
+						render={ ( { open } ) => (
+							<ToolbarButton
+								label={__('Bestand', 'downloads-gallery')}
+								onClick={ open }
+								icon={ customLink }
+							/>
+						) }
+					/>
+				</MediaUploadCheck>
+			</ToolbarGroup>
 		</BlockControls>
 		{/* End Toolbar zone */}
 
@@ -73,7 +90,9 @@ export default function Edit({attributes, setAttributes}) {
 				tagName='h3'
 				allowedFormats={[]}
 				value={ attributes.dl_title }
-				onChange={(dl_title) => setAttributes({dl_title})}
+				onChange={ ( dl_title ) => {
+					setAttributes( { dl_title: dl_title } )
+				} }
 				placeholder={__( 'Titel (bijv. Jaarverslag)', 'downloads-gallery')}
 				required
 			/>
@@ -81,9 +100,9 @@ export default function Edit({attributes, setAttributes}) {
 				tagName='div'
 				className='wp-element-button wp-block-button__link'
 				allowedFormats={[]}
-				value={ attributes.dl_link.title }
-				onChange={ (newTitle) => {
-					setAttributes( { dl_link: {...attributes.dl_link, title: newTitle} } )
+				value={ attributes.dl_button_text }
+				onChange={ ( dl_button_text ) => {
+					setAttributes( { dl_button_text: dl_button_text } )
 				} }
 				placeholder={__( 'Knoptekst (bijv. Downloaden)', 'downloads-gallery')}
 				required
