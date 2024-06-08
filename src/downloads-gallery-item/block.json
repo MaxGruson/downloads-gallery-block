@@ -20,9 +20,7 @@
 		},
 		"dl_button_text": {
 			"type": "string",
-			"default": {
-				"title": "Downloaden"
-			}
+			"default": "Downloaden"
 		}
 	},
 	"parent": [ "maxgruson/downloads-gallery"],

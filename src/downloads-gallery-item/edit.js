@@ -12,7 +12,6 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import {
-	__experimentalLinkControl as LinkControl, 
 	useBlockProps,
 	RichText, 
 	BlockControls,
@@ -23,7 +22,6 @@ import {
 import {
 	ToolbarGroup,
 	ToolbarButton,
-	Popover 
 } from '@wordpress/components';
 
 import {
@@ -31,7 +29,6 @@ import {
 } from '@wordpress/element';
 
 import {
-	link,
 	customLink
 } from '@wordpress/icons';
 
@@ -44,11 +41,6 @@ import {
  * @return {Element} Element to render.
  */
 export default function Edit({attributes, setAttributes}) {
-
-	const [ showLinkPopover, setShowLinkPopover ] = useState( false );
-	const toggleLinkPopover = () => {
-			setShowLinkPopover( ( state ) => ! state );
-	};
 
 	const blockProps = useBlockProps( {
 		className: 'downloads-gallery__item'
