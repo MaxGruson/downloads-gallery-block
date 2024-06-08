@@ -59,12 +59,6 @@ export default function Edit({attributes, setAttributes}) {
 		{/* Toolbar zone */}
 		<BlockControls>
 			<ToolbarGroup>
-				<ToolbarButton
-					icon={link}
-					label={__('Link', 'downloads-gallery')}
-					onClick={toggleLinkPopover}
-					isPressed={showLinkPopover}
-				/>
 				<MediaUploadCheck>
 					<MediaUpload
 						onSelect={ ( media ) => {
