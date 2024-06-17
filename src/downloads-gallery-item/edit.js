@@ -24,12 +24,12 @@ import {
 	ToolbarButton,
 } from '@wordpress/components';
 
-import {
-	useState 
-} from '@wordpress/element';
+import { 
+	useSelect 
+} from '@wordpress/data';
 
 import {
-	customLink
+	customLink, linkOff
 } from '@wordpress/icons';
 
 /**
@@ -46,26 +46,57 @@ export default function Edit({attributes, setAttributes}) {
 		className: 'downloads-gallery__item'
 	} );
 
+	const isFileSet = ( !! attributes.dl_link && !! attributes.dl_id );
+
+	const unlink = () => {
+		setAttributes( {
+			dl_link: undefined,
+			dl_id: undefined
+		} );
+	}
+
+	const fileTitle = useSelect( select => {
+		const file = attributes.dl_id && select( 'core' ).getMedia( attributes.dl_id );
+		console.log( file );
+		return file ? file.title.rendered : 0;
+	}, [ attributes.dl_id ] );
+
 	return (
 		<>
 		{/* Toolbar zone */}
 		<BlockControls>
 			<ToolbarGroup>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={ ( media ) => {
-							setAttributes( { dl_link: media.url  } );
-						} }
-						value={ attributes.dl_link }
-						render={ ( { open } ) => (
-							<ToolbarButton
-								label={__('Bestand', 'downloads-gallery')}
-								onClick={ open }
-								icon={ customLink }
-							/>
-						) }
-					/>
-				</MediaUploadCheck>
+				{ ! isFileSet && (
+					<MediaUploadCheck>
+						<MediaUpload
+							onSelect={ ( media ) => {
+								setAttributes( { 
+									dl_id: media.id,
+									dl_link: media.url
+								} );
+							} }
+							value={ attributes.dl_link }
+							render={ ( { open } ) => (
+								<ToolbarButton
+									label={__('Bestand', 'downloads-gallery')}
+									onClick={ open }
+									icon={ customLink }
+								/>
+							) }
+						/>
+					</MediaUploadCheck>
+				) }
+				{ isFileSet && (
+					<MediaUploadCheck>
+						<ToolbarButton
+							name='link'
+							icon={ linkOff }
+							title={ __( 'Unlink' ) }
+						 	onClick={ unlink } 
+							text={ fileTitle }
+							isActive />
+					</MediaUploadCheck>
+				) }
 			</ToolbarGroup>
 		</BlockControls>
 		{/* End Toolbar zone */}

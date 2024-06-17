@@ -2,7 +2,7 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "maxgruson/downloads-gallery-item",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "title": "Downloadblok",
   "category": "widgets",
   "icon": "download",
@@ -17,6 +17,9 @@
     },
     "dl_link": {
       "type": "string"
+    },
+    "dl_id": {
+      "type": "integer"
     },
     "dl_button_text": {
       "type": "string",
