@@ -57,7 +57,6 @@ export default function Edit({attributes, setAttributes}) {
 
 	const fileTitle = useSelect( select => {
 		const file = attributes.dl_id && select( 'core' ).getMedia( attributes.dl_id );
-		console.log( file );
 		return file ? file.title.rendered : 0;
 	}, [ attributes.dl_id ] );
 
